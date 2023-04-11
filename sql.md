@@ -112,3 +112,27 @@ More: https://learn.microsoft.com/en-us/sql/t-sql/data-types/data-types-transact
 
 Date and time:
 More: https://learn.microsoft.com/en-us/sql/t-sql/data-types/date-and-time-types?view=sql-server-ver16
+
+<br />
+<br />
+<br />
+
+# PostgreSQL
+
+## Create table
+CREATE TABLE beverages (
+    id bigserial,
+    name varchar(64),
+    cost real
+)
+
+<br />
+
+## Insert data
+INSERT INTO beverages(id, name, cost) 
+VALUES (0, 'Coffee', 4.28);
+
+<br />
+
+## Delete data
+DELETE FROM beverages WHERE id = 0;
