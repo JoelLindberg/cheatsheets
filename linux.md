@@ -1,5 +1,19 @@
 # Linux commands, utilities and one-liners
 
+## vim
+
+Preferred base .vimrc config:
+~~~
+set number
+syntax on
+colorscheme ron
+set tabstop=4
+" Inform vim to insert 4 spaces instead of a tab character
+set expandtab
+" Inform vim to always use the same distance as the tabstop when moving your text
+set shiftwidth=0
+~~~
+
 ## SSH
 
 ### SSH config file
