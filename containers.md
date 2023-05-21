@@ -20,12 +20,12 @@ It supports multiple container engines:
 Source: \
 https://developers.redhat.com/blog/2019/02/21/podman-and-buildah-for-docker-users#how_does_docker_work_
 
-## Managing containers using Podman
+## Managing images using Podman
 
 Source: \
 https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux_atomic_host/7/html/managing_containers/finding_running_and_building_containers_with_podman_skopeo_and_buildah
 
-## Pull containers from Docker
+## Pull images from Docker
 
 You need to prefix the registry name with docker.io: `docker.io/<registry name>`
 
@@ -46,3 +46,26 @@ POSTGRES_PASSWORD
 
 Source: \
 https://stackoverflow.com/questions/69162077/podman-pull-official-images-from-docker-hub
+
+<br />
+<br />
+
+## Creating and running containers
+
+Create a container image to run based on a Dockerfile.
+
+Filename: `Dockerfile`
+~~~
+FROM nginx
+COPY yourwebsite /usr/share/nginx/html
+~~~
+
+~~~
+podman build -t <name of image to create> -f Dockerfile
+~~~
+
+Run an nginx container based on the container image you just created:
+
+~~~console
+podman run -d -p 8080:80 -it <name of image created>
+~~~
