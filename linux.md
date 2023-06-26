@@ -1,5 +1,19 @@
 # Linux commands, utilities and one-liners
 
+## cat, tail and head
+
+Multi-line output to a file using `cat`:
+
+~~~bash
+cat <<-END > index.html
+<html>
+    <body>
+        <h1>Hello!</h1>
+    </body>
+</html>
+END
+~~~
+
 ## vim
 
 Preferred base .vimrc config:
