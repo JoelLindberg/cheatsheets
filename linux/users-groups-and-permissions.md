@@ -7,10 +7,10 @@ Passwords (hashed) are stored in the file `/etc/shadow`.
 View users in your current system: `cat /etc/passwd` \
 View groups in your current system: `cat /etc/group` \
 List groups your user is a member of: `groups` \
-List groups the specified user is a member of: `groups <user>` \
+List groups the specified user is a member of: `groups <user>`
 
 Add a user: `useradd <user>` \
-Add a user with comment for full name: `useradd -c "<full name>" <user>` \
+Add a user with comment for full name: `useradd -c "<full name>" <user>`
 
 Delete a user: `userdel -r <user>`
 
@@ -32,10 +32,18 @@ Source: https://www.redhat.com/sysadmin/linux-user-account-management
 
 Each user may belong to one primary group and any number of secondary groups. Nested groups are not allowed.
 
-Create a new group: `groupadd <group name>`
+Create a new group: `groupadd <group name>` \
 Create a new group with a specific id: `groupadd -g 1066 <group name>`
 
+Change the name of a group: `groupmod -n <new group name> <old group name>` \
+Change the id of a group: `groupmod -g 1033 <group name>`
+
 Delete a group: `groupdel <group name>`
+
+Add a user to a group: `usermod -aG <group> <user>` \
+Remove a user from a group: `gpasswd -d <user> <group>`
+
+*-aG is the same as --append and --groups.*
 
 <br />
 
@@ -83,8 +91,53 @@ Settings set with **umask** only apply to your current session. Permanent settin
 
 <br />
 
-## Best practices:
+### SUID, SGID, and sticky bit
+
+Source: https://www.redhat.com/sysadmin/suid-sgid-sticky-bit
 
 ### Superuser
 
-Create a new "normal" user and assign it sudo permissions using `visudo` (will edit the file `/etc/sudoers`). This way, you can be more conservative in your use of the root user account.
+*RHEL:* \
+*During the installation, when you create a user and assign it "administrator" privileges, by default, it becomes a member of the group **wheel** which means it can run any command as using sudo.*
+
+Create an admin user and assign sudo rights by making the user a member of the **wheel* group:
+
+~~~bash
+useradd <user>
+passwd <user>
+usermod -aG wheel <user>
+~~~
+
+Create admin user and assign using visudo or editing the /etc/sudoers file:
+
+~~~bash
+<user> ALL=(ALL) ALL
+~~~
+
+There is a configuration entry for the **wheel** group in the /etc/sudoers file. It makes allows all members of the wheel group to perform all commands using the sudo statement (providing password).
+
+For an ordinary full system access administrator user it will be the same thing adding your user to the **wheel** group as it would be adding an entry for the user in the sudoers file.
+
+The sudoers file however allows for more granular access control if required. To only allow `groupadd` for example, edit the sudoers file:
+
+~~~bash
+<user> ALL=/sbin/groupadd
+~~~
+
+Aliases can be created for a set of commands. In the sudoers file you could insert:
+
+~~~bash
+## Installation and management of software
+Cmnd_Alias SOFTWARE = /usr/bin/dnf, /usr/bin/rpm
+<group> ALL=SOFTWARE
+~~~
+
+Disable root:
+
+To disable root, set the root shell to /sbin/nologin:
+
+~~~bash
+$ sudo sed -i 's_root:/bin/bash_root:/sbin/nologin_' /etc/passwd
+~~~
+
+Source: https://www.redhat.com/sysadmin/linux-superuser-access
