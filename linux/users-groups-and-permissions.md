@@ -49,7 +49,7 @@ Remove a user from a group: `gpasswd -d <user> <group>`
 
 ## Permissions
 
-### chmod using octal notation
+### chmod using the numeric method
 
 Reference for assigning permissions to categories: **user**, **group** and **others**:
 
@@ -65,11 +65,15 @@ For example, set **owner** to `read` + `write`, **group** to `read` and **others
 chmod 0644 <target file>
 ~~~
 
-The first digit 0 represents the file type, which is regular when it's 0. This can, and should be left out unless we want to modify the file type.
+The first digit 0 represents the special permission type. This can be left out unless we want to set a special permission. When left out it defaults to 0. The below statement produces the same result as the one above:
 
 ~~~bash
 chmod 644 <target file>
 ~~~
+
+Permissions can also be modified using the symbolic method. I have not made any notes about this method here as I prefer to use the numeric method.
+
+Source: https://www.redhat.com/sysadmin/introduction-chmod
 
 <br />
 
@@ -91,7 +95,35 @@ Settings set with **umask** only apply to your current session. Permanent settin
 
 <br />
 
-### SUID, SGID, and sticky bit
+### Special permissions - SUID, SGID, and sticky bit
+
+Set special permission(s): `chmod X### <file or directory>`
+
+**X** is the special permission digit.
+
+0 = no permissions \
+4 = SUID \
+2 = SGID \
+1 = Sticky
+
+SUID (user special): Always executes as the user who owns the file. If the file owner doesn't have execute permissions you will see an uppercase **S** instead.
+
+~~~console
+-rwsr-xr-x. 1 root root 32656 Apr 14  2022 /usr/bin/passwd
+~~~
+
+**GUID** (group special) set on a file: Always executes as the group who owns the file. If the file owning group doesn't have execute permissions you will see an uppercase **S** instead. \
+**GUID** (group special) set on a directory: Any files created in the directory will have their group ownership set to that of the directory owner.
+
+~~~console
+drwxr-sr-x. 2 user5 user5  31 Jul  3 17:14 testdir
+~~~
+
+**Sticky**: Affects only at directory level. Only the owner (and root) of a file can remove the file withing that directory.
+
+~~~console
+drwxr-xr-t. 1 user  user  0 Jul  1 15:02 testdir
+~~~
 
 Source: https://www.redhat.com/sysadmin/suid-sgid-sticky-bit
 
