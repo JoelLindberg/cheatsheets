@@ -8,6 +8,11 @@ Installation
 
 Source: https://docs.docker.com/engine/install/centos/
 
+## CLI
+
+Shell into a running container: `docker exec -it <name or id> /bin/bash`
+View logs of a running container: `docker logs <name or id>`
+
 <br />
 
 ## Compose
@@ -15,5 +20,21 @@ Source: https://docs.docker.com/engine/install/centos/
 Installation
 
 
-
 Source: https://docs.docker.com/compose/install/linux/#install-using-the-repository
+
+<br />
+
+## Swarm
+
+<br />
+
+## Volumes and Bind mounts
+
+Bind mounts is the easy way to mount a file or folder from the host machine onto a running docker container. This makes the container dependant on a specific structure on the host.
+
+Volumes are stored in Docker's storage directory. They are managed by Docker. This is the preferred way of persisting data.
+
+Sources:
+
+* https://docs.docker.com/storage/bind-mounts/
+* https://docs.docker.com/storage/volumes/
